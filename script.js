@@ -5,8 +5,8 @@
 // Tải dữ liệu từ server API
 const loadVocabularyData = async () => {
   try {
-    const response = await fetch("/api/vocabulary");
-    if (!response.ok) throw new Error("Không tải được dữ liệu từ server");
+    const response = await fetch("./vocabularyData.json");
+    if (!response.ok) throw new Error("Không tải được dữ liệu vocabularyData.json");
     return await response.json();
   } catch (err) {
     console.error("❌ Lỗi loadVocabularyData:", err);
@@ -2878,43 +2878,71 @@ flashcard.addEventListener("click", (e) => {
     });
 });
 
+
+// ==========================================================================
+// 📌 BỘ NẠP DỮ LIỆU TĨNH CẤU HÌNH CHO GITHUB PAGES
+// ==========================================================================
+
+/**
+ * Tải file dữ liệu tiếng Anh bổ sung (English Map)
+ */
 const loadEnglishMap = async () => {
   try {
-    // Sửa "/api/english-map.json" thành "english-map.json" (truy cập trực tiếp file)
-    const response = await fetch("english-map.json"); 
+    // Đọc trực tiếp file tĩnh english-map.json bằng đường dẫn tương đối ./
+    const response = await fetch("./english-map.json", {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
+    });
+
     if (response.ok) {
       englishMap = await response.json();
       console.log("✅ Đã nạp English Map thành công");
     } else {
-      console.warn("⚠️ Server không tìm thấy file english-map.json (Lỗi 404)");
+      console.warn(`⚠️ Không tìm thấy file ./english-map.json (Lỗi HTTP ${response.status})`);
     }
   } catch (err) {
-    console.warn("ℹ️ Lỗi kết nối khi nạp english-map.json:", err);
+    console.warn("ℹ️ Lỗi kết nối khi nạp english-map.json:", err.message);
   }
 };
 
-// =======================
-// 📌 KHỞI ĐỘNG ỨNG DỤNG (HỢP NHẤT)
-// =======================
+// ==========================================================================
+// 📌 KHỞI ĐỘNG ỨNG DỤNG (STATIC ASYNC INIT)
+// ==========================================================================
 (async () => {
   try {
-    // 1. Nạp dữ liệu từ vựng chính
+    console.log("🚀 Đang khởi động ứng dụng trên GitHub Pages...");
+
+    // 1. Nạp dữ liệu từ vựng chính từ file static JSON (vocabularyData.json)
     vocabularyData = await loadVocabularyData();
-    console.log("✅ Dữ liệu chính load từ server:", vocabularyData);
+    
+    // Kiểm tra tính hợp lệ của dữ liệu từ vựng
+    if (vocabularyData && Object.keys(vocabularyData).length > 0) {
+      console.log("✅ Dữ liệu từ vựng đã nạp thành công:", vocabularyData);
+    } else {
+      console.warn("⚠️ Dữ liệu từ vựng nhận được bị rỗng hoặc chưa khớp cấu trúc.");
+    }
 
     // 2. Nạp dữ liệu tiếng Anh bổ sung (English Map)
     await loadEnglishMap(); 
 
-    // 3. Cập nhật giao diện khi mọi thứ đã sẵn sàng
-    updateLessonView();
+    // 3. Cập nhật giao diện khi dữ liệu đã sẵn sàng
+    if (typeof updateLessonView === 'function') {
+      updateLessonView();
+    } else {
+      console.error("❌ Không tìm thấy hàm updateLessonView() để hiển thị giao diện.");
+    }
     
   } catch (error) {
-    console.error("❌ Lỗi khi khởi động ứng dụng:", error);
-    // Vẫn gọi hiển thị để người dùng có thể học dữ liệu cơ bản nếu có lỗi
-    updateLessonView();
+    console.error("❌ Lỗi nghiêm trọng khi khởi động ứng dụng:", error);
+    // Vẫn gọi hiển thị để tránh treo giao diện nếu xảy ra ngoại lệ
+    if (typeof updateLessonView === 'function') {
+      updateLessonView();
+    }
   }
 })();
-
 
 // ✅ Đánh dấu từ hiện tại vào danh sách "tocfl"
 // ✅ Đánh dấu từ hiện tại vào danh sách "tocfl"

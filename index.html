@@ -1,0 +1,427 @@
+    <!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>VOCABULARY :V</title>  
+    <link rel="stylesheet" href="styles.css">  
+</head>  
+<!-- Pop-up hiển thị ghi chú -->
+<div id="hintPopup" class="hint-modal">
+    <p id="hintText"></p>
+    <button onclick="closeHintPopup()">Đóng</button>
+</div>
+<div id="hintOverlay" class="hint-overlay" onclick="closeHintPopup()"></div>
+
+<body>  
+    <div class="container">  
+        <h1>VOCABULARY</h1>  
+        
+        <!-- Modal hiển thị từ cần học lại -->  
+        <div id="review-modal" class="modal">  
+            <div class="modal-content">  
+                <span class="close">&times;</span>  
+                <h3>Từ cần học lại:</h3>  
+                <div id="review-list"></div>  
+            </div>  
+        </div>  
+
+        <!-- Khu vực chọn bài học -->  
+        <div class="lesson-controls">  
+            <!-- <label for="lesson-selector">Chọn bài học:</label>   -->
+            <button id="checkDuplicatesBtn">Dò danh sách trùng</button>
+              <!-- <button id="review-all-btn">Ôn toàn bộ</button> -->
+<button id="summary-review-btn">Ôn tập tổng hợp</button>
+
+<div id="duplicateResults"></div>
+
+
+            <select id="lesson-selector">  
+                <option value="lesson1">Bài 1</option>  
+                <option value="lesson2">Bài 2</option>  
+                <option value="lesson3">Bài 3</option>  
+                <option value="lesson4">Bài 4</option>  
+                <option value="lesson5">Bài 5</option>  
+                <option value="lesson6">Bài 6</option>  
+                <option value="lesson7">Bài 7</option>  
+                <option value="lesson8">Bài 8</option>  
+                <option value="lesson9">Bài 9</option>  
+                <option value="lesson10">Bài 10</option>  
+                <option value="lesson11">Bài 11</option>  
+                <option value="lesson12">Bài 12</option>  
+                <option value="lesson13">Bài 13</option>  
+                <option value="lesson14">Bài 14</option>  
+                <option value="lesson15">Bài 15</option>  
+                <option value="lessontonghop">ĐỀ</option>  
+            </select>  
+            
+        
+    <select id="sub-lesson-selector">
+       <option value="lesson2-1">Bài 2-1</option>  
+       <option value="lesson2-2">Bài 2-2</option>  
+       <option value="lesson2-3">Bài 2-3</option>  
+       <option value="lesson2-4">Bài 2-4</option>  
+       <option value="lesson2-5">Bài 2-5</option>  
+       <option value="lesson2-6">Bài 2-6</option>  
+       <option value="lesson2-7">Bài 2-7</option>  
+       <option value="lesson2-8">Bài 2-8</option>  
+       <option value="lesson2-9">Bài 2-9</option>  
+       <option value="lesson2-10">Bài 2-10</option>  
+       <option value="lesson2-11">Bài 2-11</option>  
+       <option value="lesson2-12">Bài 2-12</option>  
+       <option value="lesson2-13">Bài 2-13</option>  
+       <option value="lesson2-14">Bài 2-14</option>  
+       <option value="lesson2-15">Bài 2-15</option>  
+
+       <!-- <option value="lesson2-B1">B1</option>   -->
+
+    </select>
+
+
+<select id="all-lessons-selector">
+    <option value="tocfl1">tocfl1</option>
+    <option value="tocfl2">tocfl2</option>
+    <option value="tocfl3">tocfl3</option>
+    <option value="tocfl4">tocfl4</option>
+
+    <option value="練習">練習</option>
+    <option value="機會">機會</option>
+    <option value="ktra">ktra</option>
+    <option value="電商">電商</option>
+    <option value="HTP">HTP</option>
+
+
+
+
+
+
+
+
+
+
+</select>
+
+<select id="new-lessons-selector">
+    <option value="new1">Liên từ </option>
+    <option value="new2">經濟和選擇</option>
+    <option value="new3">著</option>
+    <option value="new4">發生</option>
+</select>
+
+
+     </select>
+
+            <!-- <button onclick="addNewLesson()">Thêm bài học</button>   -->
+        </div>  
+
+        <div id="review-container"></div>  
+
+        <!-- Hiển thị danh sách từ vựng -->  
+        <div class="view-vocabulary">  
+            <button onclick="showVocabulary()">Hiển thị từ vựng</button>  
+            <ul id="vocabulary-list"></ul>  
+        </div>  
+
+        <!-- Khu vực flash card -->  
+        <div class="flashcard">  
+  <input 
+    type="text" 
+    id="pinyin-input" 
+    placeholder="Type Pinyin here..." 
+    onkeyup="checkPinyin(event)"
+    lang="en" 
+    inputmode="latin" 
+    autocomplete="off" 
+    autocorrect="off" 
+    spellcheck="false"
+>
+<input type="number" id="jump-to-index" placeholder="Nhập số từ..." min="1" style="width: 80px; margin-left: 8px;" />
+
+<button id="quick-review-toggle" style="margin-left: 8px;">Ôn nhanh</button>
+<button id="edit-current-word-btn" style="margin-left: 4px;">Chỉnh</button>
+<button id="delete-current-word-btn" style="margin-left: 4px;">🗑️</button>
+
+
+
+<div id="word-counter" style="margin-top: 10px; font-weight: bold;">0 / 0</div>
+
+
+            <div class="card" id="flashcard" onclick="toggleCard()">  
+                <div id="card-content"></div>  
+            </div>  
+            <div class="flashcard-controls">
+              <button onclick="toggleCardOrder()">Đảo thứ tự</button>
+     <button id="reviewBtn"  style="display: inline"">Ôn tập</button>
+<button id="reviewAllBtn" style="display:none">Ôn tập All</button>
+<button id="copyReviewBtn" style="display: inline">📋 Copy nhanh</button>
+<button id="exitReviewBtn">Thoát</button>
+                <button onclick="prevCard()"    style="display: none">Trước</button>
+                <button onclick="nextCard()"  style="display: none">Sau</button>
+                <button onclick="shuffleCards()">Xáo trộn</button>
+                <button onclick="readCard()"  style="display: none">Đọc</button>
+                <button onclick="checkReviewStatus()">Kết thúc bài học</button>
+                <button onclick="showNote()">Ghi chú</button>
+                <button onclick="showTips()">Mẹo</button> <!-- Nút hiển thị mẹo -->
+                <button id="optimizeDataBtn">Tối ưu dữ liệu</button>
+                <button id="sortByHanBtn">Sắp xếp Hán tự</button>
+
+
+<button id="exitSummaryBtn" style="display:none">Thoát tổng hợp</button>
+
+            </div>
+            
+        </div>  
+
+<!-- Popup kiểm tra trùng -->
+<div id="duplicateOverlay" class="overlay"></div>
+<div id="duplicatePopup" class="popup">
+    <div id="duplicatePopupContent"></div>
+</div>
+
+
+
+<!-- Modal ôn lại toàn bộ -->
+<div id="reviewAllModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeReviewAllModal()">&times;</span>
+        <h3>Danh sách từ cần học lại (Toàn bộ):</h3>
+        <div id="reviewAllContent"></div>
+    </div>
+</div>
+
+
+        <!-- Khu vực  hiện ghi chú -->  
+
+<div id="note-section" class="note-modal" style="display: none;">
+  <h4>Ghi chú</h4>
+  <div id="note-display" style="white-space: pre-wrap; font-size: 20px;"></div>
+  <div class="modal-buttons">
+    <button onclick="editNote()">Chỉnh sửa</button>
+    <button onclick="closeNote()">Đóng</button>
+  </div>
+</div>
+
+
+
+
+        <!-- Khu vực thêm từ vựng -->  
+        <div class="add-vocabulary">  
+            <h2>Thêm từ vựng</h2>  
+            <textarea id="vocabulary-input" placeholder="Nhập từ vựng..."></textarea>  
+            <textarea id="text"></textarea>
+            <button onclick="generateTTS()">🔊 Tạo audio</button>
+
+<audio id="player" controls></audio>
+
+<a id="download" download="audio.mp3">⬇️ Tải MP3</a>
+            <button onclick="addVocabularyBatch()">Thêm từ vựng</button>  
+        </div>  
+        <div style="margin-top: 20px;">
+
+          <div class="tts-box">
+  <textarea id="ttsInput" placeholder="Dán văn bản tiếng Trung vào đây..."></textarea>
+
+  <button id="ttsSpeak" class="speaker-btn">
+    🔊
+  </button>
+</div>
+<div id="ttsPinyin" style="margin-top:6px; font-size:18px; color:#333;"></div>
+<div id="ttsVietnamese" style="margin-top:6px; font-size:18px; color:#006400;"></div>
+
+
+  <!-- <h3>🔹 Đánh dấu động từ ly hợp hàng loạt</h3> -->
+  <!-- <input type="text" id="batch-lyhop-input" placeholder="Nhập từ Hán cách nhau bằng ;" style="width: 100%; padding: 10px; font-size: 16px;" />
+  <button onclick="markBatchLyHop()" style="margin-top: 10px;">Đánh dấu</button>
+</div>
+
+        <button id="getTraditionalListBtn">Lấy danh sách Hán tự</button>
+        <select id="traditionalFilter" style="margin-bottom: 10px;">
+  <option value="all">Tất cả</option>
+  <option value="lyHop">Chỉ từ ly hợp 🔹</option>
+  <option value="needReview">Cần ôn lại 🔴</option> -->
+</select>
+
+        <!-- <div id="traditionalListPopup" class="popup">
+            <div id="traditionalListContent"></div>
+            <button onclick="closeTraditionalListPopup()">Đóng</button>
+          </div>
+          <div id="traditionalOverlay" class="overlay"></div>
+
+    </div>   -->
+<!-- Modal Ghi Chú -->  
+
+    <!-- Tải file JavaScript -->  
+    <!-- <ul id="vocabulary-list"></ul> -->
+
+<!-- Modal chỉnh từ hiện tại -->
+<!-- Modal chỉnh từ hiện tại -->
+<!-- Modal chỉnh từ hiện tại -->
+<div id="editWordModal" class="modal" style="display: none;">
+  <div class="modal-content" style="max-width: 500px; padding: 20px; border-radius: 12px; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+
+    <h3 style="margin-bottom: 16px;">✏️ Chỉnh từ hiện tại</h3>
+
+    <!-- Hán tự -->
+    <div style="margin-bottom: 12px;">
+      <label><strong>Hán tự:</strong></label><br>
+      <input
+        type="text"
+        id="edit-hantu-input"
+        style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;"
+      >
+    </div>
+
+    <!-- Hán Việt -->
+    <div style="margin-bottom: 12px;">
+      <label><strong>Hán Việt:</strong></label><br>
+      <input
+        type="text"
+        id="edit-hanviet-input"
+        style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;"
+      >
+    </div>
+
+    <!-- Nghĩa -->
+    <div style="margin-bottom: 12px;">
+      <label><strong>Nghĩa:</strong></label><br>
+      <input
+        type="text"
+        id="edit-meaning-input"
+        style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;"
+      >
+    </div>
+
+    <!-- Pinyin -->
+    <div style="margin-bottom: 20px;">
+      <label><strong>Pinyin:</strong></label><br>
+      <input
+        type="text"
+        id="edit-pinyin-input"
+        style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;"
+      >
+    </div>
+
+    <!-- Nút -->
+    <div style="text-align: right;">
+      <button
+        id="saveEditBtn"
+        style="padding: 8px 16px; background:#4CAF50; color:#fff; border:none; border-radius:6px; margin-right:8px; cursor:pointer;"
+      >
+        💾 Lưu
+      </button>
+
+      <button
+        onclick="closeEditModal()"
+        style="padding: 8px 16px; background:#ccc; border:none; border-radius:6px; cursor:pointer;"
+      >
+        ❌ Hủy
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Sticky Notes -->
+<div id="note-area" class="note-area minimize">
+  <div class="note-header" onclick="toggleNoteArea()">
+    📝 Ghi chú
+  </div>
+  <div class="note-content">
+    <ul id="note-list"></ul>
+    <button id="add-note-btn">+ Thêm ghi chú</button>
+  </div>
+</div>
+
+
+
+
+
+<!-- Xóa nhiều từ trong khoảng chỉ số -->
+<div id="delete-tool" style="margin-top: 20px;">
+  <h3>Xóa nhiều từ</h3>
+  <label>Từ số:</label>
+  <input type="number" id="deleteStart" min="1" style="width: 60px;" />
+  <label>Đến số:</label>
+  <input type="number" id="deleteEnd" min="1" style="width: 60px;" />
+  <button onclick="deleteRange()">🗑 Xóa</button>
+</div>
+
+
+<!-- Tìm Hán tự thuộc bài nào -->
+<div id="search-hantu-tool">
+  <h3>🔍 Tìm Hán tự thuộc bài nào</h3>
+  <input type="text" id="searchHanInput" placeholder="Nhập Hán tự..." style="width: 150px;" />
+</div>
+
+
+<!-- Popup hiển thị kết quả tìm Hán tự -->
+<!-- Popup hiển thị kết quả tìm Hán tự -->
+<div id="hanSearchPopup" class="popup-box" style="display: none; margin-top: 20px;">
+  <div class="popup-content">
+    <h3>Kết quả tìm Hán tự</h3>
+    <div id="hanSearchResults" style="max-height: 300px; overflow-y: auto;"></div>
+    <button onclick="closeHanSearchPopup()">Đóng</button>
+    <button id="goToWordBtn">Đi</button>
+  </div>
+</div>
+
+
+
+
+<div id="summaryModal" class="modal">
+  <div class="modal-content">
+    <h3>Chọn bài để tổng hợp ôn tập</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <div>
+        <label><strong>Bài chính:</strong></label><br>
+        <select id="multi-main-select" multiple size="8" style="min-width: 120px;"></select>
+      </div>
+      <div>
+        <label><strong>Bài phụ:</strong></label><br>
+        <select id="multi-sub-select" multiple size="8" style="min-width: 120px;"></select>
+      </div>
+    </div>
+    <br>
+    <button id="startSummaryBtn">Bắt đầu ôn tập</button>
+    <button onclick="closeSummaryModal()">Đóng</button>
+  </div>
+</div>
+
+
+<div id="noteModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3>📝 Ghi chú</h3>
+    <textarea id="noteText" rows="5" style="width:100%;"></textarea>
+    <br>
+    <button id="saveNoteBtn">Lưu</button>
+    <button onclick="closeNoteModal()">Đóng</button>
+  </div>
+</div>
+
+
+
+
+
+<!-- Ô luyện nghe 4 thanh điệu -->
+<div id="tone-trainer" 
+     style="position: fixed; right: 20px; top: 100px; width: 240px; background: #f9f9f9; padding: 12px; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.2); z-index: 999;">
+  <h4 style="margin-top:0;">🎧 Luyện 4 thanh điệu</h4>
+  <input type="text" id="toneInput" placeholder="Nhập pinyin không dấu..." style="width: 100%; padding: 6px;">
+  <div id="toneDisplay" style="margin-top: 10px; font-size: 22px; font-weight: bold;">
+    <span id="tone1">-</span>&nbsp;
+    <span id="tone2">-</span>&nbsp;
+    <span id="tone3">-</span>&nbsp;
+    <span id="tone4">-</span>
+  </div>
+</div>
+
+
+
+
+<script src="https://unpkg.com/pinyin-pro"></script>
+
+
+    <script src="script.js"></script>  
+
+</body>  
+</html>

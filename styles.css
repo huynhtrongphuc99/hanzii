@@ -1,0 +1,836 @@
+/* Reset mặc định */
+body, h1, h2, ul, li, p {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4CAF50;
+}
+
+.lesson-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.lesson-controls select {
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+.lesson-controls button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.lesson-controls button:hover {
+    background: #45a049;
+}
+
+.flashcard {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.card {
+    font-size:60px;
+    /* width: 800px; */
+    max-width: 1000px;
+    height:400px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card span {
+    font-size:140px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* .flashcard-controls {display: flex;} */
+
+.flashcard-controls button {
+    margin: 0 5px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.flashcard-controls button:hover {
+    background: #1e88e5;
+}
+
+.flashcard-controls button.hidden {
+    display: none;
+}
+
+.add-vocabulary {
+    margin-top: 20px;
+}
+
+.add-vocabulary textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.add-vocabulary button {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.add-vocabulary button:hover {
+    background: #fb8c00;
+}
+
+ul#vocabulary-list {
+    display: none;
+    list-style: none;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+}
+
+ul#vocabulary-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+}
+
+ul#vocabulary-list li:last-child {
+    border-bottom: none;
+}
+
+ul#vocabulary-list strong {
+    font-size: 18px;
+}
+
+ul#vocabulary-list em {
+    font-size: 14px;
+    color: #666;
+}
+.alert-list {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    white-space: pre-wrap; /* Giữ khoảng cách dòng */
+}
+.delete-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+}
+
+.modal {
+    display: none; /* Ẩn ban đầu */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền tối */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    max-height: 80vh; /* Giới hạn chiều cao tối đa */
+    overflow-y: auto; /* Hiện thanh cuộn nếu nội dung quá dài */
+    text-align: center;
+}
+
+.note-modal {  
+    position: fixed;  
+    z-index: 1001;  
+    left: 50%;  
+    top: 50%;  
+    transform: translate(-50%, -50%);  
+    background-color: white;  
+    padding: 30px;  
+    border-radius: 12px;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+    width: 60%; /* Thay đổi kích thước chiếm 60% màn hình */  
+    max-width: 100%; /* Giới hạn kích thước tối đa */  
+    max-height: 100%; /* Giới hạn chiều cao tối đa */  
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá chiều cao */  
+    font-family: Arial, sans-serif;  
+    color: #333; /* Màu chữ */  
+}  
+
+.note-modal h4 {  
+    margin-bottom: 15px;  
+}  
+
+.note-modal textarea {  
+    width: 100%;  
+    height: 500px; /* Chiều cao của textarea */  
+    margin-bottom: 15px;  
+    padding: 10px;  
+    border: 1px solid #ccc;  
+    border-radius: 5px;  
+    resize: none; /* Không cho phép thay đổi kích thước */  
+    font-size: 30px; /* Kích thước chữ */  
+}  
+
+.modal-buttons {  
+    display: flex;  
+    justify-content: space-between; /* Đặt khoảng cách giữa các nút */  
+}  
+
+.modal-buttons button {  
+    background-color: #4CAF50; /* Màu nền cho nút */  
+    color: white; /* Màu chữ trên nút */  
+    border: none;  
+    padding: 10px 15px;  
+    border-radius: 5px;  
+    cursor: pointer;  
+    transition: background 0.3s;  
+}  
+
+.modal-buttons button:hover {  
+    background-color: #45a049; /* Màu nền của nút khi hover */  
+}
+
+/* Pop-up mẹo */
+.hint-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    display: none;
+    width: 400px;
+    max-height: 70vh; /* Giới hạn chiều cao tối đa */
+    overflow-y: auto; /* Hiện thanh cuộn nếu nội dung quá dài */
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Khi hiển thị pop-up */
+.hint-modal.show {
+    display: block;
+}
+
+/* Nút đóng */
+.hint-modal button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.hint-modal button:hover {
+    background: #0056b3;
+}
+
+/* Overlay làm mờ nền */
+.hint-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    display: none;
+}
+
+/* Khi hiển thị overlay */
+.hint-overlay.show {
+    display: block;
+}
+
+.hint-modal{
+font-size: 30px;
+width: 600px;
+font-family: auto;
+text-align: left;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 10%; left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 20px;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    z-index: 100;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.popup.show,
+.overlay.show {
+    display: block;
+}
+
+.popup ul {
+    padding-left: 20px;
+}
+
+.popup li {
+    margin-bottom: 8px;
+}
+
+.popup button {
+    margin-left: 10px;
+}
+#review-all-btn {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#review-all-btn:hover {
+    background-color: #1e88e5;
+}
+#pinyin-input {
+    flex: 1;
+    margin: 20px 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.message-box {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    z-index: 1000;
+    animation: fadeOut 1.5s forwards ease-in-out;
+}
+
+.message-box.success {
+    background-color: #4CAF50;
+}
+
+.message-box.error {
+    background-color: #f44336;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.select-highlight {
+    border: 2px solid #4CAF50;
+    background-color: #eaffea;
+    transition: all 0.3s ease;
+}
+
+
+/* Responsive cho các loại màn hình máy tính */
+
+@media (max-width: 1366px) {
+    .card {
+        font-size: 48px;
+        height: 320px;
+    }
+
+    .card span {
+        font-size: 100px;
+    }
+
+    .note-modal textarea {
+        height: 400px;
+        font-size: 24px;
+    }
+
+    .hint-modal {
+        width: 500px;
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px;
+    }
+
+    .lesson-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .card {
+        width: 100%;
+        height: 280px;
+        font-size: 36px;
+    }
+
+    .card span {
+        font-size: 80px;
+    }
+
+    .note-modal textarea {
+        height: 300px;
+        font-size: 18px;
+    }
+
+    .modal-content,
+    .note-modal {
+        width: 90%;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hint-modal {
+        width: 90%;
+        font-size: 20px;
+    }
+}
+
+
+#note-area {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+#add-note-btn {
+  background: #f0d600;
+  border: none;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.note {
+  background: #ffff88;
+  width: 400px;
+  height: 400px;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+}
+
+.note-header {
+  background: #fff899;
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.note-header span {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.note textarea {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  resize: none;
+  background: transparent;
+  outline: none;
+}
+
+  .popup-box {
+    position: absolute;
+    top: 250px;
+    left: 30px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    padding: 16px;
+    z-index: 9999;
+    width: 300px;
+  }
+
+  .popup-content h3 {
+    margin-top: 0;
+    color: #0077cc;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 6px;
+  }
+
+  .popup-content button {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: #ff6961;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .popup-content button:hover {
+    background: #e6453c;
+  }
+
+
+#delete-tool,
+#search-hantu-tool {
+  position: fixed;
+  left: 50px;
+  background: #f8f8f8;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 9999;
+  width: 240px;
+}
+
+#delete-tool {
+  top: 120px;
+}
+
+#search-hantu-tool {
+  top: 60%;
+}
+
+#search-hantu-tool input {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+
+#summaryModal.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+#summaryModal .modal-content {
+  background: white;
+  width: 80%;
+  max-width: 500px;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+
+/* Panel phím tắt mở link */
+#quick-links-panel {
+  position: fixed;
+  right: 20px;
+  /* top: 150px; chỉnh tuỳ theo vị trí bạn muốn/ */
+  width: 250px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  padding: 10px;
+  font-size: 14px;
+  z-index: 9999;
+}
+
+#quick-links-panel h3 {
+  margin-top: 0;
+  font-size: 16px;
+  text-align: center;
+  color: #4CAF50;
+}
+
+#quick-links-list div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+
+#quick-links-list a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    flex: 1;
+}
+
+#quick-links-list button {
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+#quick-links-panel button {
+  margin-top: 5px;
+  width: 100%;
+  padding: 6px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+.han-result {
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+.han-result:hover {
+  background: #f1f3f5;
+}
+.han-result.selected {
+  background: #d0ebff;
+  font-weight: bold;
+}
+
+
+.note-area {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 600px;
+  max-height: 400px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.note-area.minimize {
+  height: 30px;        
+  width: 150px;        
+  cursor: pointer;
+}
+
+.note-header {
+  padding: 5px 10px;
+  background: #f5f5f5;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  user-select: none;
+}
+
+.note-content {
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 350px;
+}
+
+#note-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#note-list li {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.note{width: 600px;}
+.note-text {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.note-actions button {
+  margin-left: 5px;
+}
+
+
+#hanSearchPopup {
+  display: none; /* ẩn hẳn lúc load */
+  position: fixed;
+  top: 50%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 9999;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.search-result-item {
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.search-result-item:hover {
+  background-color: #f0f8ff;
+}
+
+.goto-btn {
+  margin-right: 8px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.lesson-label {
+  color: #666;
+  font-size: 12px;
+  margin-left: 6px;
+}
+/* Khi lesson được chọn thì làm nền nổi bật */
+#lesson-selector.highlight-lesson,
+#sub-lesson-selector.highlight-lesson,
+#all-lessons-selector.highlight-lesson {
+  background-color: #fffa90;
+  border: 2px solid orange;
+  transition: background-color 0.5s ease;
+}
+
+.tts-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#ttsInput {
+  width: 100%;
+  height: 80px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.speaker-btn {
+  font-size: 22px;
+  cursor: pointer;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+
+

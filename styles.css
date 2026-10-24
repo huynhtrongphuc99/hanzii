@@ -382,7 +382,6 @@ text-align: left;
     background-color: #1e88e5;
 }
 #pinyin-input {
-    display: none;
     flex: 1;
     margin: 20px 10px;
     padding: 10px;

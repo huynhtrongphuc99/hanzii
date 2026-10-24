@@ -3269,12 +3269,13 @@ let toneExamples = {}; // sẽ load từ server
 // 🔄 Load dữ liệu ban đầu từ server
 async function loadToneExamples() {
   try {
-    const res = await fetch("/api/vocabulary");
+    const res = await fetch("./lesson2.json");
+    if (!res.ok) return;
     const data = await res.json();
     toneExamples = data.toneExamples || {};
-    console.log("✅ Đã load toneExamples:", toneExamples);
+    console.log("✅ Đã load toneExamples thành công");
   } catch (err) {
-    console.error("❌ Lỗi load toneExamples:", err);
+    console.warn("ℹ️ Không nạp được toneExamples từ file tĩnh:", err.message);
   }
 }
 

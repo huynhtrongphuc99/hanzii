@@ -2878,70 +2878,20 @@ flashcard.addEventListener("click", (e) => {
     });
 });
 
-// ==========================================================================
-// 📌 BỘ NẠP DỮ LIỆU TĨNH CẤU HÌNH CHO GITHUB PAGES
-// ==========================================================================
-
-/**
- * Tải file dữ liệu tiếng Anh bổ sung (English Map)
- */
 const loadEnglishMap = async () => {
   try {
-    // Đọc trực tiếp file tĩnh english-map.json bằng đường dẫn tương đối ./
-    const response = await fetch("./english-map.json", {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache'
-      }
-    });
-
+    // Sửa "/api/english-map.json" thành "english-map.json" (truy cập trực tiếp file)
+    const response = await fetch("english-map.json"); 
     if (response.ok) {
       englishMap = await response.json();
       console.log("✅ Đã nạp English Map thành công");
     } else {
-      console.warn(`⚠️ Không tìm thấy file ./english-map.json (Lỗi HTTP ${response.status})`);
+      console.warn("⚠️ Server không tìm thấy file english-map.json (Lỗi 404)");
     }
   } catch (err) {
-    console.warn("ℹ️ Lỗi kết nối khi nạp english-map.json:", err.message);
+    console.warn("ℹ️ Lỗi kết nối khi nạp english-map.json:", err);
   }
 };
-
-// ==========================================================================
-// 📌 KHỞI ĐỘNG ỨNG DỤNG (STATIC ASYNC INIT)
-// ==========================================================================
-(async () => {
-  try {
-    console.log("🚀 Đang khởi động ứng dụng trên GitHub Pages...");
-
-    // 1. Nạp dữ liệu từ vựng chính từ file static JSON (vocabularyData.json)
-    vocabularyData = await loadVocabularyData();
-    
-    // Kiểm tra tính hợp lệ của dữ liệu từ vựng
-    if (vocabularyData && Object.keys(vocabularyData).length > 0) {
-      console.log("✅ Dữ liệu từ vựng đã nạp thành công:", vocabularyData);
-    } else {
-      console.warn("⚠️ Dữ liệu từ vựng nhận được bị rỗng hoặc chưa khớp cấu trúc.");
-    }
-
-    // 2. Nạp dữ liệu tiếng Anh bổ sung (English Map)
-    await loadEnglishMap(); 
-
-    // 3. Cập nhật giao diện khi dữ liệu đã sẵn sàng
-    if (typeof updateLessonView === 'function') {
-      updateLessonView();
-    } else {
-      console.error("❌ Không tìm thấy hàm updateLessonView() để hiển thị giao diện.");
-    }
-    
-  } catch (error) {
-    console.error("❌ Lỗi nghiêm trọng khi khởi động ứng dụng:", error);
-    // Vẫn gọi hiển thị để tránh treo giao diện nếu xảy ra ngoại lệ
-    if (typeof updateLessonView === 'function') {
-      updateLessonView();
-    }
-  }
-})();
 
 // =======================
 // 📌 KHỞI ĐỘNG ỨNG DỤNG (HỢP NHẤT)
@@ -3291,13 +3241,12 @@ let toneExamples = {}; // sẽ load từ server
 // 🔄 Load dữ liệu ban đầu từ server
 async function loadToneExamples() {
   try {
-    const res = await fetch("./lesson2.json");
-    if (!res.ok) return;
+    const res = await fetch("/api/vocabulary");
     const data = await res.json();
     toneExamples = data.toneExamples || {};
-    console.log("✅ Đã load toneExamples thành công");
+    console.log("✅ Đã load toneExamples:", toneExamples);
   } catch (err) {
-    console.warn("ℹ️ Không nạp được toneExamples từ file tĩnh:", err.message);
+    console.error("❌ Lỗi load toneExamples:", err);
   }
 }
 
